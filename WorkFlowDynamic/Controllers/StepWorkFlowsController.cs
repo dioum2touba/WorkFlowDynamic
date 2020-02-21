@@ -14,7 +14,7 @@ namespace WorkFlowDynamic.Controllers
 {
     public class StepWorkFlowsController : Controller
     {
-        private readonly WorkflowdynamicContext _context; 
+        private readonly WorkflowdynamicContext _context;
         private readonly WorkFlowServices _serviceFlow = new WorkFlowServices();
         private List<ControleurModels> controleurs = null;
 
@@ -28,7 +28,9 @@ namespace WorkFlowDynamic.Controllers
         // GET: StepWorkFlows
         public async Task<IActionResult> Index()
         {
-            return View(await _context.StepWorkFlowSet.ToListAsync());
+            var schemeWorkFlow = HttpContext.Session.Get<SchemeWorkFlowSet>("SchemeWorkFlow");
+            ViewBag.SchemeName = schemeWorkFlow.SchemeName;
+            return View(_serviceFlow.GetSchemeStepFlowModel(schemeWorkFlow, controleurs));
         }
 
         // GET: StepWorkFlows/Details/5
@@ -52,13 +54,17 @@ namespace WorkFlowDynamic.Controllers
         // GET: StepWorkFlows/Create
         public IActionResult Create(long? id)
         {
-            ViewBag.SchemeName = _context.SchemeWorkFlowSet.FirstOrDefault().SchemeName;
+            var schemeWorkFlow = _context.SchemeWorkFlowSet.Where(s => s.Id == id).FirstOrDefault();
+            ViewBag.SchemeName = schemeWorkFlow.SchemeName;
+            // StepFlowModel flowModel = new StepFlowModel() { Controller = controleur, Action = servcice };
+            HttpContext.Session.Set<SchemeWorkFlowSet>("SchemeWorkFlow", schemeWorkFlow);
             ViewBag.controleurs = GetDataControllers(controleurs);
             ViewBag.services = GetDataActions(controleurs);
             var name = HttpContext.Session.GetString("name");
             return View();
         }
 
+        #region Filtrer Liste des descriptions des Actions et Controller
         public List<SelectListItem> GetDataActions(List<ControleurModels> controleurs)
         {
             List<SelectListItem> values = new List<SelectListItem>();
@@ -80,24 +86,49 @@ namespace WorkFlowDynamic.Controllers
             }
             return values;
         }
+        #endregion
 
+        #region Recupérer l'objet sélectionné depuis la vue
         [HttpGet]
         public IActionResult GetDataActionSelected(string controllerSelected)
         {
             var lists = controleurs.Where(c => c.Controller == controllerSelected).ToList();
             return Ok(lists);
         }
+        #endregion
 
+        #region Garder une activité choisie dans la session
         [HttpPost]
         public IActionResult GarderActivities([FromBody] StepFlowModel flowModel)
         {
-           // StepFlowModel flowModel = new StepFlowModel() { Controller = controleur, Action = servcice };
+            // StepFlowModel flowModel = new StepFlowModel() { Controller = controleur, Action = servcice };
             var lists = HttpContext.Session.Get<List<StepFlowModel>>("StepWorkFlow") ?? new List<StepFlowModel>();
             lists.Add(flowModel);
             HttpContext.Session.Set<List<StepFlowModel>>("StepWorkFlow", lists);
             // Requires you add the Set and Get extension method mentioned in the topic.
             return Ok(lists);
         }
+        #endregion
+
+        #region Recupérer les activités qui ont été déja choisie
+        [HttpGet]
+        public IActionResult GarderActivitiesLists()
+        {
+            return Ok(HttpContext.Session.Get<List<StepFlowModel>>("StepWorkFlow") ?? new List<StepFlowModel>());
+        }
+        #endregion
+
+        #region Enregistrer le schema dans la base de donnée
+        [HttpGet]
+        public IActionResult SaveSchemeInDatabase()
+        {
+            var schemeWorkFlow = HttpContext.Session.Get<SchemeWorkFlowSet>("SchemeWorkFlow");
+            var listStep = HttpContext.Session.Get<List<StepFlowModel>>("StepWorkFlow") ?? new List<StepFlowModel>();
+            _serviceFlow.SaveSchemeInDatabase(schemeWorkFlow, listStep);
+            HttpContext.Session.Set<List<StepFlowModel>>("StepWorkFlow", null);
+            return Ok(listStep);
+        }
+        #endregion
 
         // POST: StepWorkFlows/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
