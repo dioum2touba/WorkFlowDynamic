@@ -14,102 +14,84 @@
 
 <h1>Activités du schéma @ViewBag.SchemeName</h1>
 
-<div class="container">
-
+<div class="card-body" style="z-index: 0;">
     <h3 class="text-center">Liste des activités du workflow</h3>
-
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>
-                    Nom de l'activité
-                </th>
-                <th>
-                    Gestionnaire de Service
-                </th>
-                <th>
-                    Service
-                </th>
-                <th>
-                    Etapes
-                </th>
-                <th>
-                    Nombre Occurence
-                </th>
-            </tr>
-        </thead>
-        <tbody class="row_position">
-            @foreach (var item in Model)
-            {
-                <tr id=@item.scheme_Step.Id>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Activity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Gestionnaire)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Service)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Ordre)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Occurence)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" class="btn-primary btn-sm" asp-route-id="@item.scheme_Step.Id">Modifier</a> |
-                        <a asp-action="Delete" class="btn-danger btn-sm" asp-route-id="@item.scheme_Step.Id">Supprimer</a>
-                    </td>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Nom de l'activité
+                    </th>
+                    <th>
+                        Gestionnaire de Service
+                    </th>
+                    <th>
+                        Service
+                    </th>
+                    <th>
+                        Etapes
+                    </th>
+                    <th>
+                        Nombre Occurence
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
-
+            </thead>
+            <tbody class="row_position">
+                @foreach (var item in Model)
+                {
+                    <tr id=@item.scheme_Step.Id>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Activity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Gestionnaire)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Service)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ordre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Occurence)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" class="btn-primary btn-sm" asp-route-id="@item.scheme_Step.Id">Modifier</a> |
+                            <a asp-action="Delete" class="btn-danger btn-sm" asp-route-id="@item.scheme_Step.Id">Supprimer</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div> <!-- container / end -->
 
 
 <script type="text/javascript">
 
     $(".row_position").sortable({
-
         delay: 150,
-
         stop: function () {
-
             var selectedData = new Array();
-
             $('.row_position>tr').each(function () {
-
                 selectedData.push($(this).attr("id"));
-
             });
-
             //updateOrder(selectedData);
-
         }
-
     });
 
 
     function updateOrder(data) {
 
         $.ajax({
-
             url: "ajaxPro.php",
-
             type: 'post',
-
             data: { position: data },
-
             success: function () {
-
                 alert('your change successfully saved');
-
             }
-
         })
-
     }
 
 </script>

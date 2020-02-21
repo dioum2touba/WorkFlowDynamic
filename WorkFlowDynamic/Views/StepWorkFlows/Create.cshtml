@@ -6,20 +6,18 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 <h1>WorkFlow: @ViewBag.SchemeName</h1>
 
 <hr />
-<div class="row">
-    <div class="col-md-12">
-        @*<form asp-action="Create">*@
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @*<div class="form-group">
+<div class="card-body" style="position: -webkit-sticky;
+  position: sticky; top: 0px;">
+    <div class="row">
+        <div class="col-md-12">
+            @*<form asp-action="Create">*@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<div class="form-group">
                 <label asp-for="Controller" class="control-label"></label>
                 <input asp-for="Controller" class="form-control" />
                 <span asp-validation-for="Controller" class="text-danger"></span>
@@ -28,147 +26,205 @@
                 <input asp-for="Action" class="form-control" />
                 <span asp-validation-for="Action" class="text-danger"></span>
             </div>*@
-        <div id="controllerSelected" class="d-inline p-2 bg-dark text-white">
-            <label asp-for="Controller" class="control-label"></label>
-            <select asp-for="Controller" asp-items="ViewBag.controleurs"></select>
-        </div>
-        <div id="ActionSelected" class="d-inline p-2 bg-primary text-white">
-            <label asp-for="Action" class="control-label"></label>
-            <select asp-for="Action" asp-items="ViewBag.services"></select>
-        </div>
-        <div class="d-inline p-2 bg-primary text-white">
-            @{
-                var ordre = "Ordre exécution";
-            }
-            <label asp-for="@ordre" class="control-label"></label>
-            <input asp-for="@ordre" type="number">
-        </div>
+            <div class="d-inline p-2 bg-primary text-white">
+                @{
+                    var Activity = "Activité";
+                }
+                <label asp-for="@Activity" class="control-label"></label>
+                <input asp-for="@Activity" type="text">
+            </div>
+            <div id="controllerSelected" class="d-inline p-2 bg-dark text-white">
+                <label asp-for="Controller" class="control-label"></label>
+                <select asp-for="Controller" asp-items="ViewBag.controleurs"></select>
+            </div>
+            <div id="ActionSelected" class="d-inline p-2 bg-primary text-white">
+                <label asp-for="Action" class="control-label"></label>
+                <select asp-for="Action" asp-items="ViewBag.services"></select>
+            </div>
 
-        <div class="form-group">
-            <input type="submit" id="SaveStep" value="Enregistrer" class="btn btn-primary" />
+            <div class="form-group">
+                <input type="submit" id="SaveStep" value="Enregistrer" class="btn btn-primary" />
+            </div>
+            @*</form>*@
         </div>
-        @*</form>*@
-    </div>
-    <hr />
-    <div class="row" id="ListEtape">
+        <hr />
 
-    </div>
-    <br /><br /><br />
-    <div class="row">
-        <div class="form-group">
-            <input type="submit" id="SaveScheme" value="Enregistrer le schéma" class="btn btn-primary" />
+        <br /><br /><br />
+        <div class="col-md-12">
+            <div class="form-group">
+                <input type="submit" id="SaveScheme" value="Enregistrer le schéma" class="btn btn-primary" />
+            </div>
         </div>
     </div>
 </div>
-
+<br />
+<div class="card-body" style="z-index: 0;">
+    <h3 class="text-center">Liste des activités du workflow</h3>
+    <div class="table-responsive">
+        <table id="myTable" class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        Nom de l'activité
+                    </th>
+                    <th>
+                        Gestionnaire de Service
+                    </th>
+                    <th>
+                        Service
+                    </th>
+                    <th>
+                        Supprimer
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="row_position">
+            </tbody>
+        </table>
+    </div>
+</div>
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
-<script src="~/js/axios.min.js"></script>
-<script src="~/js/jquery-2.1.4.min.js"></script>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script type="text/javascript">
-        $(document).ready(function () {
-            // Début de l'initialisation
-            $("#SaveStep").prop('disabled', true);
+    @*<script src="~/js/axios.min.js"></script>*@
+    @*<script src="~/js/jquery-2.1.4.min.js"></script>*@
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-            RechargerActivites();
-            // Fin initialisation
+        <script type="text/javascript">
+    function updateOrder(data) {
+        $.ajax({
+            url: "ajaxPro.php",
+            type: 'post',
+            data: { position: data },
+            success: function () {
+                alert('your change successfully saved');
+            }
+        })
+    }
 
-            // Pour gerer les changements automatiques des action en fonction du controleur choisi
-            $("#Controller").change(function () {
-                if ($("#Controller").val() != "") {
-                    $.ajax({
-                        url: '@Url.Action("GetDataActionSelected", "StepWorkFlows")',
-                        contentType: 'application/html;charset=utf-8',
-                        data: { controllerSelected: $('#Controller').val() },
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function (result) {
-                            var activityDropDown = $("#Action");
-                            console.log(result)
-                            $("#Action option").each(function (index, option) { option.remove() });
-                            // activityDropDown.append($("<option>", { value: "", text: "Sélectionner" }));
-
-                            $.each(result, function (index, obj) {
-                                if (obj.action != null) {
-                                    $("#SaveStep").prop('disabled', false);
-                                    activityDropDown.append($("<option>", { value: obj.action, text: obj.description }));
-                                }
-                            })
-                            var ordre = $("#ordre").val()
-                            if (ordre == "")
-                                $("#ordre").val(1)
-                            else
-                                $("#ordre").val(parseInt(ordre)+1)
-                        },
-                        error: function (xhr, status) {
-
-                        }
-                    })
-                }
-                else {
-                    $("#SaveStep").prop('disabled', true);
-                }
-            });
-
-            // Valider une étape choisie
-            $('#SaveStep').on('click', function () {
-                var action = $("#Action").val();
-                var controller = $("#Controller").val();
-                var ordre = $("#ordre").val();
-                var flowModel = JSON.stringify({
-                    'cible': controller,
-                    'service': action,
-                    'ordre': ordre
+    $(document).ready(function () {
+        // Début de l'initialisation
+        $(".row_position").sortable({
+            delay: 150,
+            stop: function () {
+                var selectedData = new Array();
+                $('.row_position>tr').each(function () {
+                    selectedData.push($(this).attr("id"));
                 });
+                //updateOrder(selectedData);
+            }
+        });
+
+        $("#SaveStep").prop('disabled', true);
+
+        RechargerActivites();
+        // Fin initialisation
+
+        // Pour gerer les changements automatiques des action en fonction du controleur choisi
+        $("#Controller").change(function () {
+            if ($("#Controller").val() != "") {
                 $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("GarderActivities", "StepWorkFlows")',
-                    data: flowModel,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
+                    url: '@Url.Action("GetDataActionSelected", "StepWorkFlows")',
+                    contentType: 'application/html;charset=utf-8',
+                    data: { controllerSelected: $('#Controller').val() },
+                    type: 'GET',
+                    dataType: 'json',
                     success: function (result) {
-                        console.clear()
-                        console.log('In Ajax: Result: ')
-
-                        $("#ListEtape").empty()
-                        $.each(result, function (index, value) {
-                            $("#ListEtape").append('<div class="col-sm-3" style="">' +
-                                '<div class= "card" style = "width: 15rem; margin-right: 5px; padding-right: 5px; border: 2px solid #007bff;">' +
-                                '<ul class="list-group list-group-flush">' +
-                                '<li class="list-group-item">' + value.cible + '</li>' +
-                                '<li class="list-group-item">' + value.service + '</li>' +
-                                '<li class="list-group-item">' + value.ordre + '</li></ul>' +
-                                '</div></div>')
-                        });
-
-                        // $("#SaveStep").prop('disabled', true);
-                    }
-                })
-            });
-
-            // Valider le schéma
-            $("#SaveScheme").on('click', function () {
-                $.ajax({
-                    type: "GET",
-                    url: '@Url.Action("SaveSchemeInDatabase", "StepWorkFlows")',
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (result) {
-                        console.log("Resultat save")
+                        var activityDropDown = $("#Action");
                         console.log(result)
-                         location.href = '@Url.Action("Index", "StepWorkFlows")'
+                        $("#Action option").each(function (index, option) { option.remove() });
+                        // activityDropDown.append($("<option>", { value: "", text: "Sélectionner" }));
 
+                        $.each(result, function (index, obj) {
+                            if (obj.action != null) {
+                                $("#SaveStep").prop('disabled', false);
+                                activityDropDown.append($("<option>", { value: obj.action, text: obj.description }));
+                            }
+                        })
+                        var ordre = $("#ordre").val()
+                        if (ordre == "")
+                            $("#ordre").val(1)
+                        else
+                            $("#ordre").val(parseInt(ordre)+1)
                     },
-                    error: function (response) {
-                        console.log("Resultat Error")
-                        console.log(response)
+                    error: function (xhr, status) {
+
                     }
                 })
+            }
+            else {
+                $("#SaveStep").prop('disabled', true);
+            }
+        });
+
+        // Valider une étape choisie
+        $('#SaveStep').on('click', function () {
+            //Try to get tbody first with jquery children. works faster!
+            var tbody = $('#myTable').children('tbody');
+
+            //Then if no tbody just select your table
+            var table = tbody.length ? tbody : $('#myTable');
+            var action = $("#Action").val();
+            var controller = $("#Controller").val();
+            var activity = $("#Activity").val();
+            var flowModel = JSON.stringify({
+                'cible': controller,
+                'service': action,
+                'activity': activity
             });
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GarderActivities", "StepWorkFlows")',
+                data: flowModel,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    console.clear()
+                    console.log('In Ajax: Result: ')
+                    console.log(result)
+                    table.empty()
+                    $.each(result, function (index, value) {
+                        table.append('<tr id=' + value.id + '><td>' + value.activity + '</td><td>' + value.cible + '</td><td>' + value.service + '</td>' +
+                            '<td><button class="btn-danger btn-sm" onclick=SupprimerLigne('+value.id+') id='+value.id+'>Supprimer</button></td></tr>');
+                    });
+
+                    //$("#ListEtape").empty()
+                    //$.each(result, function (index, value) {
+                    //    $("#ListEtape").append('<div class="col-sm-3" style="">' +
+                    //        '<div class= "card" style = "width: 15rem; margin-right: 5px; padding-right: 5px; border: 2px solid #007bff;">' +
+                    //        '<ul class="list-group list-group-flush">' +
+                    //        '<li class="list-group-item">' + value.cible + '</li>' +
+                    //        '<li class="list-group-item">' + value.service + '</li>' +
+                    //        '<li class="list-group-item">' + value.ordre + '</li></ul>' +
+                    //        '</div></div>')
+                    //});
+
+                    // $("#SaveStep").prop('disabled', true);
+                }
+            })
+        });
+
+        // Valider le schéma
+        $("#SaveScheme").on('click', function () {
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("SaveSchemeInDatabase", "StepWorkFlows")',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    console.log("Resultat save")
+                    console.log(result)
+                        location.href = '@Url.Action("Index", "StepWorkFlows")'
+
+                },
+                error: function (response) {
+                    console.log("Resultat Error")
+                    console.log(response)
+                }
+            })
+        });
     });
 
     function RechargerActivites() {
@@ -200,6 +256,35 @@
                 $("#ordre").val(ordre)
             }
         })
+    }
+
+    function SupprimerLigne(id)
+    {
+        console.log("Id line: " + id)
+        
+        //Try to get tbody first with jquery children. works faster!
+        var tbody = $('#myTable').children('tbody');
+
+        //Then if no tbody just select your table
+        var table = tbody.length ? tbody : $('#myTable');
+
+        $.ajax({
+                type: "GET",
+                url: '@Url.Action("RemoveActivities", "StepWorkFlows")',
+                data: { setpFlowsId: id },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    console.clear()
+                    console.log('In Ajax: Result: ')
+                    console.log(result)
+                    table.empty()
+                    $.each(result, function (index, value) {
+                        table.append('<tr id=' + value.id + '><td>' + value.activity + '</td><td>' + value.cible + '</td><td>' + value.service + '</td>' +
+                            '<td><button class="btn-danger btn-sm" onclick=SupprimerLigne('+value.id+') id='+value.id+'>Supprimer</button></td></tr>');
+                    });
+                }
+            })
     }
     </script>
 }

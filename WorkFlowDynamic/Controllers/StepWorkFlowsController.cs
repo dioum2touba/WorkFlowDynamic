@@ -103,10 +103,30 @@ namespace WorkFlowDynamic.Controllers
         {
             // StepFlowModel flowModel = new StepFlowModel() { Controller = controleur, Action = servcice };
             var lists = HttpContext.Session.Get<List<StepFlowModel>>("StepWorkFlow") ?? new List<StepFlowModel>();
+            var nbre = lists.Count + 1;
+            flowModel.id = nbre + "";
             lists.Add(flowModel);
             HttpContext.Session.Set<List<StepFlowModel>>("StepWorkFlow", lists);
             // Requires you add the Set and Get extension method mentioned in the topic.
             return Ok(lists);
+        }
+        #endregion
+
+        #region Supprimer une activité choisie dans la session
+        [HttpGet]
+        public IActionResult RemoveActivities(string setpFlowsId)
+        {
+            var lists = HttpContext.Session.Get<List<StepFlowModel>>("StepWorkFlow") ?? new List<StepFlowModel>();
+            lists.Remove(lists.FirstOrDefault(l => l.id == setpFlowsId));
+            int nbre = 0;
+            List<StepFlowModel> setpFlows = new List<StepFlowModel>();
+            foreach (var elt in lists)
+            {
+                nbre += 1;
+                elt.id = nbre + "";
+                setpFlows.Add(elt);
+            }
+            return Ok(setpFlows);
         }
         #endregion
 

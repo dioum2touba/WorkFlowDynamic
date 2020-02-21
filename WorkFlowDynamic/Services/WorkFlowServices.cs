@@ -44,7 +44,7 @@ namespace WorkFlowDynamic
                         Controller = elt.cible,
                         Action = elt.service
                     },
-                    Numberstep = Convert.ToInt32(elt.ordre),
+                    //Numberstep = Convert.ToInt32(elt.ordre),
                     SchemeWorkFlowId = schemeWorkFlow.Id,
                     Activity = schemeWorkFlow.SchemeName,
                     Occurences = 1
