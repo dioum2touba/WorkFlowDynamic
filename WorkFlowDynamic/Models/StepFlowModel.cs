@@ -7,10 +7,12 @@ namespace WorkFlowDynamic.Models
 {
     public class StepFlowModel
     {
+        public string id { get; set; }
+
         public string cible { get; set; }
 
         public string service { get; set; }
 
-        public string ordre { get; set; }
+        public string activity { get; set; }
     }
 }
