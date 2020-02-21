@@ -1,0 +1,101 @@
+﻿@model WorkFlowDynamic.DataEntityTypes.utilisateur
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>utilisateur</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="profil" class="control-label"></label>
+                <input asp-for="profil" class="form-control" />
+                <span asp-validation-for="profil" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="active" class="control-label"></label>
+                <input asp-for="active" class="form-control" />
+                <span asp-validation-for="active" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="adresse" class="control-label"></label>
+                <input asp-for="adresse" class="form-control" />
+                <span asp-validation-for="adresse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="datenaiss" class="control-label"></label>
+                <input asp-for="datenaiss" class="form-control" />
+                <span asp-validation-for="datenaiss" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="email" class="control-label"></label>
+                <input asp-for="email" class="form-control" />
+                <span asp-validation-for="email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="login" class="control-label"></label>
+                <input asp-for="login" class="form-control" />
+                <span asp-validation-for="login" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="nom" class="control-label"></label>
+                <input asp-for="nom" class="form-control" />
+                <span asp-validation-for="nom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="passwordd" class="control-label"></label>
+                <input asp-for="passwordd" class="form-control" />
+                <span asp-validation-for="passwordd" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="prenom" class="control-label"></label>
+                <input asp-for="prenom" class="form-control" />
+                <span asp-validation-for="prenom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="sexe" class="control-label"></label>
+                <input asp-for="sexe" class="form-control" />
+                <span asp-validation-for="sexe" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="telephone" class="control-label"></label>
+                <input asp-for="telephone" class="form-control" />
+                <span asp-validation-for="telephone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="specialite" class="control-label"></label>
+                <input asp-for="specialite" class="form-control" />
+                <span asp-validation-for="specialite" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fonction" class="control-label"></label>
+                <input asp-for="fonction" class="form-control" />
+                <span asp-validation-for="fonction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="structure_interne" class="control-label"></label>
+                <select asp-for="structure_interne" class ="form-control" asp-items="ViewBag.structure_interne"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="id_specialite" class="control-label"></label>
+                <select asp-for="id_specialite" class ="form-control" asp-items="ViewBag.id_specialite"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

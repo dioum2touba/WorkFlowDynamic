@@ -1,0 +1,34 @@
+{
+  "Controllers": [
+    {
+      "Action": "Create",
+      "Controller": "utilisateurs",
+      "Description": "Creer un utilisateur",
+      "DetailsControleurs": "Gestion des utilisateurs"
+    },
+    {
+      "Action": "Create",
+      "Controller": "Specialites",
+      "DetailsControleurs": "Gestion des specialites",
+      "Description": "Creer une specialites"
+    },
+    {
+      "Action": "Create",
+      "Controller": "structureInterne",
+      "DetailsControleurs": "Gestion des structures internes",
+      "Description": "Creer une structure interne"
+    },
+    {
+      "Action": "Create",
+      "Controller": "Roles",
+      "DetailsControleurs": "Gestion des roles",
+      "Description": "Creer un role"
+    },
+    {
+      "Action": "Create",
+      "Controller": "Tickets",
+      "DetailsControleurs": "Gestion des tickets",
+      "Description": "Creer un ticket"
+    }
+  ]
+} 

@@ -1,0 +1,58 @@
+﻿{
+   "ContextClassName": "WorkflowdynamicContext",
+   "ContextNamespace": null,
+   "DefaultDacpacSchema": null,
+   "DoNotCombineNamespace": false,
+   "IdReplace": false,
+   "IncludeConnectionString": true,
+   "ModelNamespace": "DataEntityTypes",
+   "OutputContextPath": "Models",
+   "OutputPath": "EntityTypes",
+   "ProjectRootNamespace": "WorkFlowDynamic",
+   "SelectedHandlebarsLanguage": 0,
+   "SelectedToBeGenerated": 0,
+   "Tables": [
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[roles]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Scheme_StepSet]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[SchemeWorkFlowSet]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[specialite]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[StepWorkFlowSet]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[structure_interne]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[ticket]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[TransitionSet]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[utilisateur]"
+      }
+   ],
+   "UseDatabaseNames": true,
+   "UseFluentApiOnly": false,
+   "UseHandleBars": false,
+   "UseInflector": false,
+   "UseLegacyPluralizer": false,
+   "UseSpatial": false
+}

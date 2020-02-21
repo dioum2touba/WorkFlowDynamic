@@ -1,0 +1,138 @@
+﻿@model WorkFlowDynamic.DataEntityTypes.StepWorkFlowSet
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>WorkFlow: @ViewBag.SchemeName</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        @*<form asp-action="Create">*@
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @*<div class="form-group">
+            <label asp-for="Controller" class="control-label"></label>
+            <input asp-for="Controller" class="form-control" />
+            <span asp-validation-for="Controller" class="text-danger"></span>
+
+            <label asp-for="Action" class="control-label"></label>
+            <input asp-for="Action" class="form-control" />
+            <span asp-validation-for="Action" class="text-danger"></span>
+        </div>*@
+        <div id="controllerSelected" class="d-inline p-2 bg-dark text-white">
+            <label asp-for="Controller" class="control-label"></label>
+            <select asp-for="Controller" asp-items="ViewBag.controleurs"></select>
+        </div>
+        <div id="ActionSelected" class="d-inline p-2 bg-primary text-white">
+            <label asp-for="Action" class="control-label"></label>
+            <select asp-for="Action" asp-items="ViewBag.services"></select>
+        </div>
+        <div class="d-inline p-2 bg-primary text-white">
+            @{
+                var ordre = "Ordre exécution";
+            }
+            <label asp-for="@ordre" class="control-label"></label>
+            <input asp-for="@ordre" type="number">
+        </div>
+
+        <div class="form-group">
+            <input type="submit" id="SaveStep" value="Enregistrer" class="btn btn-primary" />
+        </div>
+        @*</form>*@
+    </div>
+    <hr />
+    <div class="row" id="ListEtape">
+        
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<script src="~/js/axios.min.js"></script>
+<script src="~/js/jquery-2.1.4.min.js"></script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#SaveStep").prop('disabled', true);
+            $("#ordre").val(1); 
+            // ordre
+            //$("#ordre").keyup(function () {
+            //    if ($("#ordre").val() != null)
+            //        $("#SaveStep").prop('disabled', false);
+            //});
+
+            // Pour gerer les changements automatiques des action en fonction du controleur choisi 
+            $("#Controller").change(function () {
+                if ($("#Controller").val() != "") {
+                    $.ajax({
+                        url: '@Url.Action("GetDataActionSelected", "StepWorkFlows")',
+                        contentType: 'application/html;charset=utf-8',
+                        data: { controllerSelected: $('#Controller').val() },
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (result) {
+                            var activityDropDown = $("#Action");
+                            console.log(result)
+                            $("#Action option").each(function (index, option) { option.remove() });
+                            // activityDropDown.append($("<option>", { value: "", text: "Sélectionner" }));
+                            
+                            $.each(result, function (index, obj) {
+                                if (obj.action != null) {
+                                    $("#SaveStep").prop('disabled', false);
+                                    activityDropDown.append($("<option>", { value: obj.action, text: obj.description }));
+                                }
+                            })
+
+                        },
+                        error: function (xhr, status) {
+
+                        }
+                    })
+                }
+                else {
+                    $("#SaveStep").prop('disabled', true);
+                }
+            });
+
+            $('#SaveStep').on('click', function () {
+                var action = $("#Action").val();
+                var controller = $("#Controller").val();
+                var ordre = $("#ordre").val();
+                var flowModel = JSON.stringify({
+                                'cible': controller,
+                                'service': action,
+                                'ordre': ordre
+                           });
+                $.ajax({
+                     type: "POST",
+                     url: '@Url.Action("GarderActivities", "StepWorkFlows")',
+                     data: flowModel,
+                     contentType: "application/json; charset=utf-8",
+                     dataType: "json",
+                    success: function (result) {
+                         console.clear()
+                        console.log('In Ajax: Result: ')
+                        
+                         $("#ListEtape").empty()
+                         $.each(result, function(index, value) {
+                             $("#ListEtape").append('<div class="col-sm-3" style="">'+
+                             '<div class= "card" style = "width: 15rem; margin-right: 5px; padding-right: 5px; border: 2px solid #007bff;">'+
+                                '<ul class="list-group list-group-flush">'+
+                                '<li class="list-group-item">'+value.cible+'</li>'+
+                                '<li class="list-group-item">'+value.service+'</li>'+
+                                '<li class="list-group-item">'+value.ordre+'</li></ul>'+
+                            '</div></div>')
+                         });
+                        var ordre = $("#ordre").val();
+                        $("#ordre").val(parseInt(ordre)+1)
+                       // $("#SaveStep").prop('disabled', true);
+                     }
+                })
+        })
+    });
+  </script>
+}

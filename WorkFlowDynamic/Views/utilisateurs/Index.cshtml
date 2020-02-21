@@ -1,0 +1,119 @@
+﻿@model IEnumerable<WorkFlowDynamic.DataEntityTypes.utilisateur>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.profil)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.active)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.adresse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.datenaiss)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.login)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.nom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.passwordd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.prenom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.sexe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.telephone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.specialite)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.fonction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.id_specialiteNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.structure_interneNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.profil)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.active)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.adresse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.datenaiss)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.login)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.nom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.passwordd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.prenom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sexe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.telephone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.specialite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fonction)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.id_specialiteNavigation.id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.structure_interneNavigation.nom_structure)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.id_utilisateur">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.id_utilisateur">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.id_utilisateur">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
