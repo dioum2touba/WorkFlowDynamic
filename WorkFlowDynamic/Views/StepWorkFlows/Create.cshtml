@@ -6,11 +6,47 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+@*<style>
+        tr {
+            width: 100%;
+            display: inline-table;
+            height:60px;
+            table-layout: fixed;
+        }
+    </style>*@
+<style>
+    .row_position {
+        border-collapse: separate;
+        border-spacing: 0 15px;
+    }
 
+    table {
+        border-collapse: collapse;
+    }
+
+    th {
+        background-color: white;
+        Color: black;
+        border: 1px solid black;
+    }
+
+    td {
+        width: 150px;
+        text-align: center;
+        border-top: 1px solid black;
+        border: 1px solid black;
+        padding: 5px;
+        background-color: black;
+        Color: white;
+    }
+
+    .geeks {
+        border-right: hidden;
+    }
+</style>
 
 <h1>WorkFlow: @ViewBag.SchemeName</h1>
 
-<hr />
 <div class="card-body" style="position: -webkit-sticky;
   position: sticky; top: 0px;">
     <div class="row">
@@ -18,14 +54,14 @@
             @*<form asp-action="Create">*@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @*<div class="form-group">
-                <label asp-for="Controller" class="control-label"></label>
-                <input asp-for="Controller" class="form-control" />
-                <span asp-validation-for="Controller" class="text-danger"></span>
+                    <label asp-for="Controller" class="control-label"></label>
+                    <input asp-for="Controller" class="form-control" />
+                    <span asp-validation-for="Controller" class="text-danger"></span>
 
-                <label asp-for="Action" class="control-label"></label>
-                <input asp-for="Action" class="form-control" />
-                <span asp-validation-for="Action" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="Action" class="control-label"></label>
+                    <input asp-for="Action" class="form-control" />
+                    <span asp-validation-for="Action" class="text-danger"></span>
+                </div>*@
             <div class="d-inline p-2 bg-primary text-white">
                 @{
                     var Activity = "Activité";
@@ -61,50 +97,41 @@
 <div class="card-body" style="z-index: 0;">
     <h3 class="text-center">Liste des activités du workflow</h3>
     <div class="table-responsive">
-        <table id="myTable" class="table table-hover">
-            <thead>
-                <tr>
-                    <th>
-                        Nom de l'activité
-                    </th>
-                    <th>
-                        Gestionnaire de Service
-                    </th>
-                    <th>
-                        Service
-                    </th>
-                    <th>
-                        Supprimer
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="row_position">
-            </tbody>
+        @*<table id="myTable" class="table table-hover" style="border-spacing: 0px 10px;">*@
+        <table class="thead-dark table table-hover">
+            <tr>
+                <th>
+                    Nom de l'activité
+                </th>
+                <th>
+                    Gestionnaire de Service
+                </th>
+                <th>
+                    Service
+                </th>
+                <th>
+                    Supprimer
+                </th>
+            </tr>
         </table>
+        <table id="myTable" class="row_position thead-dark table table-hover">
+        </table>
+        @*</table>*@
     </div>
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<br />
+<br />
+<br />
 
-    @*<script src="~/js/axios.min.js"></script>*@
-    @*<script src="~/js/jquery-2.1.4.min.js"></script>*@
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@*<script src="~/js/axios.min.js"></script>*@
+@*<script src="~/js/jquery-2.1.4.min.js"></script>*@
+<script src="~/lib/sweetalert2/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="~/css/sweetalert2/sweetalert2.min.css">
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-        <script type="text/javascript">
-    function updateOrder(data) {
-        $.ajax({
-            url: "ajaxPro.php",
-            type: 'post',
-            data: { position: data },
-            success: function () {
-                alert('your change successfully saved');
-            }
-        })
-    }
-
-    $(document).ready(function () {
+    <script type="text/javascript">
+     $(document).ready(function () {
         // Début de l'initialisation
         $(".row_position").sortable({
             delay: 150,
@@ -112,8 +139,25 @@
                 var selectedData = new Array();
                 $('.row_position>tr').each(function () {
                     selectedData.push($(this).attr("id"));
+                    console.log("Line selected");
+                    console.log($(this).attr("id"));
                 });
-                //updateOrder(selectedData);
+                console.log(selectedData);
+                 $.ajax({
+                    url:'@Url.Action("SaveOrderStepScheme", "StepWorkFlows")',
+                    type:'post',
+                    data:{position:selectedData},
+                    success:function(){
+                        Swal.fire({
+                          position: 'bottom-end',
+                          icon: 'success',
+                          title: 'Changement éffectuer avec succes',
+                          showConfirmButton: false,
+                          timer: 1500
+                        })
+                    }
+
+                })
             }
         });
 
@@ -186,7 +230,7 @@
                     console.log(result)
                     table.empty()
                     $.each(result, function (index, value) {
-                        table.append('<tr id=' + value.id + '><td>' + value.activity + '</td><td>' + value.cible + '</td><td>' + value.service + '</td>' +
+                        table.append('<tr id=' + value.id + '><td class="geeks">' + value.activity + '</td><td>' + value.cible + '</td><td>' + value.service + '</td>' +
                             '<td><button class="btn-danger btn-sm" onclick=SupprimerLigne('+value.id+') id='+value.id+'>Supprimer</button></td></tr>');
                     });
 
@@ -228,6 +272,11 @@
     });
 
     function RechargerActivites() {
+        //Try to get tbody first with jquery children. works faster!
+        var tbody = $('#myTable').children('tbody');
+        //Then if no tbody just select your table
+        var table = tbody.length ? tbody : $('#myTable');
+        console.log("Actualisation de la page");
         $.ajax({
             type: "GET",
             url: '@Url.Action("GarderActivitiesLists", "StepWorkFlows")',
@@ -237,23 +286,28 @@
                 console.clear()
                 console.log('In Ajax: Result: ')
                 console.log(result)
-
-                var activityDropDown = $("#Controller");
-                activityDropDown.append($("<option>", { value: "", text: "Sélectionner" }));
-                $("#Controller").val("Sélectionner");
-                $("#ListEtape").empty()
+                table.empty()
                 $.each(result, function (index, value) {
-                    $("#ListEtape").append('<div class="col-sm-3" style="">' +
-                        '<div class= "card" style = "width: 15rem; margin-right: 5px; padding-right: 5px; border: 2px solid #007bff;">' +
-                        '<ul class="list-group list-group-flush">' +
-                        '<li class="list-group-item">' + value.cible + '</li>' +
-                        '<li class="list-group-item">' + value.service + '</li>' +
-                        '<li class="list-group-item">' + value.ordre + '</li></ul>' +
-                        '</div></div>')
+                    table.append('<tr id=' + value.id + '><td class="geeks">' + value.activity + '</td><td>' + value.cible + '</td><td>' + value.service + '</td>' +
+                        '<td><button class="btn-danger btn-sm" onclick=SupprimerLigne('+value.id+') id='+value.id+'>Supprimer</button></td></tr>');
                 });
 
-                var ordre = $("#ordre").val()
-                $("#ordre").val(ordre)
+                //var activityDropDown = $("#Controller");
+                //activityDropDown.append($("<option>", { value: "", text: "Sélectionner" }));
+                //$("#Controller").val("Sélectionner");
+                //$("#ListEtape").empty()
+                //$.each(result, function (index, value) {
+                //    $("#ListEtape").append('<div class="col-sm-3" style="">' +
+                //        '<div class= "card" style = "width: 15rem; margin-right: 5px; padding-right: 5px; border: 2px solid #007bff;">' +
+                //        '<ul class="list-group list-group-flush">' +
+                //        '<li class="list-group-item">' + value.cible + '</li>' +
+                //        '<li class="list-group-item">' + value.service + '</li>' +
+                //        '<li class="list-group-item">' + value.ordre + '</li></ul>' +
+                //        '</div></div>')
+                //});
+
+                //var ordre = $("#ordre").val()
+                //$("#ordre").val(ordre)
             }
         })
     }
@@ -261,30 +315,48 @@
     function SupprimerLigne(id)
     {
         console.log("Id line: " + id)
-        
+
         //Try to get tbody first with jquery children. works faster!
         var tbody = $('#myTable').children('tbody');
 
         //Then if no tbody just select your table
         var table = tbody.length ? tbody : $('#myTable');
+        Swal.fire({
+            title: 'Etes-vous sûr?',
+            text: "de supprimé cette ligne",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: 'Non, annuler!',
+            confirmButtonText: 'Oui, supprime-le!'
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("RemoveActivities", "StepWorkFlows")',
+                    data: { setpFlowsId: id },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        console.clear()
+                        console.log('In Ajax: Result: ')
+                        console.log(result)
+                        table.empty()
+                        $.each(result, function (index, value) {
+                            table.append('<tr id=' + value.id + '><td class="geeks">' + value.activity + '</td><td>' + value.cible + '</td><td>' + value.service + '</td>' +
+                                '<td><button class="btn-danger btn-sm" onclick=SupprimerLigne('+value.id+') id='+value.id+'>Supprimer</button></td></tr>');
+                        })
+                        Swal.fire(
+                            'Supprimé!',
+                            'Activité supprimée',
+                            'success'
+                        )
+                    }
+                })
 
-        $.ajax({
-                type: "GET",
-                url: '@Url.Action("RemoveActivities", "StepWorkFlows")',
-                data: { setpFlowsId: id },
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (result) {
-                    console.clear()
-                    console.log('In Ajax: Result: ')
-                    console.log(result)
-                    table.empty()
-                    $.each(result, function (index, value) {
-                        table.append('<tr id=' + value.id + '><td>' + value.activity + '</td><td>' + value.cible + '</td><td>' + value.service + '</td>' +
-                            '<td><button class="btn-danger btn-sm" onclick=SupprimerLigne('+value.id+') id='+value.id+'>Supprimer</button></td></tr>');
-                    });
-                }
-            })
+            }
+        });
     }
     </script>
 }

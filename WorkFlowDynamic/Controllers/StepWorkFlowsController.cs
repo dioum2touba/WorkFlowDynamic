@@ -26,11 +26,18 @@ namespace WorkFlowDynamic.Controllers
         }
 
         // GET: StepWorkFlows
-        public async Task<IActionResult> Index()
+        public IActionResult Index(long? id)
         {
-            var schemeWorkFlow = HttpContext.Session.Get<SchemeWorkFlowSet>("SchemeWorkFlow");
+            var schemeWorkFlow = _context.SchemeWorkFlowSet.Where(s => s.Id == id).FirstOrDefault();
+            HttpContext.Session.Set<SchemeWorkFlowSet>("SchemeWorkFlow", schemeWorkFlow);
+            HttpContext.Session.Set<string>("StepWorkFlowsPage", "Index");
             ViewBag.SchemeName = schemeWorkFlow.SchemeName;
-            return View(_serviceFlow.GetSchemeStepFlowModel(schemeWorkFlow, controleurs));
+            ViewBag.SchemeId = schemeWorkFlow.Id;
+            ViewBag.controleurs = GetDataControllers(controleurs);
+            ViewBag.services = GetDataActions(controleurs);
+            var list = _serviceFlow.GetSchemeStepFlowModel(schemeWorkFlow, controleurs);
+            HttpContext.Session.Set<List<SchemeStepFlowModel>>("SchemeStepFlowModel", list);
+            return View(new StepWorkFlowSet());
         }
 
         // GET: StepWorkFlows/Details/5
@@ -56,6 +63,7 @@ namespace WorkFlowDynamic.Controllers
         {
             var schemeWorkFlow = _context.SchemeWorkFlowSet.Where(s => s.Id == id).FirstOrDefault();
             ViewBag.SchemeName = schemeWorkFlow.SchemeName;
+            HttpContext.Session.Set<string>("StepWorkFlowsPage", "Create");
             // StepFlowModel flowModel = new StepFlowModel() { Controller = controleur, Action = servcice };
             HttpContext.Session.Set<SchemeWorkFlowSet>("SchemeWorkFlow", schemeWorkFlow);
             ViewBag.controleurs = GetDataControllers(controleurs);
@@ -101,14 +109,34 @@ namespace WorkFlowDynamic.Controllers
         [HttpPost]
         public IActionResult GarderActivities([FromBody] StepFlowModel flowModel)
         {
-            // StepFlowModel flowModel = new StepFlowModel() { Controller = controleur, Action = servcice };
-            var lists = HttpContext.Session.Get<List<StepFlowModel>>("StepWorkFlow") ?? new List<StepFlowModel>();
-            var nbre = lists.Count + 1;
-            flowModel.id = nbre + "";
-            lists.Add(flowModel);
-            HttpContext.Session.Set<List<StepFlowModel>>("StepWorkFlow", lists);
-            // Requires you add the Set and Get extension method mentioned in the topic.
-            return Ok(lists);
+            var page = HttpContext.Session.Get<string>("StepWorkFlowsPage");
+            if (page == "Create")
+            {
+                var lists = HttpContext.Session.Get<List<StepFlowModel>>("StepWorkFlow") ?? new List<StepFlowModel>();
+                var nbre = lists.Count + 1;
+                flowModel.id = nbre + "";
+                lists.Add(flowModel);
+                HttpContext.Session.Set<List<StepFlowModel>>("StepWorkFlow", lists);
+                // Requires you add the Set and Get extension method mentioned in the topic.
+                return Ok(lists);
+            }
+            else
+            {
+                SchemeStepFlowModel schemeStepFlow = new SchemeStepFlowModel()
+                {
+                    Activity = flowModel.activity,
+                    Gestionnaire = flowModel.cible,
+                    Service = flowModel.service,
+                    Occurence = 1
+                };
+                var lists = HttpContext.Session.Get<List<SchemeStepFlowModel>>("SchemeStepFlowModel") ?? new List<SchemeStepFlowModel>();
+                var nbre = lists.Count + 1;
+                schemeStepFlow.Ordre = nbre + "";
+                lists.Add(schemeStepFlow);
+                HttpContext.Session.Set<List<SchemeStepFlowModel>>("SchemeStepFlowModel", lists);
+                // Requires you add the Set and Get extension method mentioned in the topic.
+                return Ok(lists);
+            }
         }
         #endregion
 
@@ -116,17 +144,47 @@ namespace WorkFlowDynamic.Controllers
         [HttpGet]
         public IActionResult RemoveActivities(string setpFlowsId)
         {
-            var lists = HttpContext.Session.Get<List<StepFlowModel>>("StepWorkFlow") ?? new List<StepFlowModel>();
-            lists.Remove(lists.FirstOrDefault(l => l.id == setpFlowsId));
-            int nbre = 0;
-            List<StepFlowModel> setpFlows = new List<StepFlowModel>();
-            foreach (var elt in lists)
+            var page = HttpContext.Session.Get<string>("StepWorkFlowsPage");
+            if (page == "Create")
             {
-                nbre += 1;
-                elt.id = nbre + "";
-                setpFlows.Add(elt);
+                var lists = HttpContext.Session.Get<List<StepFlowModel>>("StepWorkFlow") ?? new List<StepFlowModel>();
+                lists.Remove(lists.FirstOrDefault(l => l.id == setpFlowsId));
+                int nbre = 0;
+                List<StepFlowModel> setpFlows = new List<StepFlowModel>();
+                foreach (var elt in lists)
+                {
+                    nbre += 1;
+                    elt.id = nbre + "";
+                    setpFlows.Add(elt);
+                }
+                HttpContext.Session.Set<List<StepFlowModel>>("StepWorkFlow", setpFlows);
+                return Ok(setpFlows);
             }
-            return Ok(setpFlows);
+            else
+            {
+                var lists = HttpContext.Session.Get<List<SchemeStepFlowModel>>("SchemeStepFlowModel") ?? new List<SchemeStepFlowModel>();
+                lists.Remove(lists.FirstOrDefault(l => l.Ordre == setpFlowsId));
+                int nbre = 0;
+                List<SchemeStepFlowModel> setpFlows = new List<SchemeStepFlowModel>();
+                foreach (var elt in lists)
+                {
+                    nbre += 1;
+                    elt.Ordre = nbre + "";
+                    setpFlows.Add(elt);
+                }
+                HttpContext.Session.Set<List<SchemeStepFlowModel>>("SchemeStepFlowModel", setpFlows);
+                return Ok(setpFlows);
+            }
+            
+        }
+        #endregion
+
+        #region Enregistrer l'ordre des étapes du schéma
+        [HttpPost]
+        public IActionResult SaveOrderStepScheme(List<string> position)
+        {
+            HttpContext.Session.Set<List<string>>("positions", position);
+            return Ok("Succes");
         }
         #endregion
 
@@ -134,7 +192,11 @@ namespace WorkFlowDynamic.Controllers
         [HttpGet]
         public IActionResult GarderActivitiesLists()
         {
-            return Ok(HttpContext.Session.Get<List<StepFlowModel>>("StepWorkFlow") ?? new List<StepFlowModel>());
+            var page = HttpContext.Session.Get<string>("StepWorkFlowsPage");
+            if (page == "Index")
+                return Ok(HttpContext.Session.Get<List<SchemeStepFlowModel>>("SchemeStepFlowModel") ?? new List<SchemeStepFlowModel>());
+            else
+                return Ok(HttpContext.Session.Get<List<StepFlowModel>>("StepWorkFlow") ?? new List<StepFlowModel>());
         }
         #endregion
 
@@ -142,11 +204,24 @@ namespace WorkFlowDynamic.Controllers
         [HttpGet]
         public IActionResult SaveSchemeInDatabase()
         {
+            var page = HttpContext.Session.Get<string>("StepWorkFlowsPage");
             var schemeWorkFlow = HttpContext.Session.Get<SchemeWorkFlowSet>("SchemeWorkFlow");
-            var listStep = HttpContext.Session.Get<List<StepFlowModel>>("StepWorkFlow") ?? new List<StepFlowModel>();
-            _serviceFlow.SaveSchemeInDatabase(schemeWorkFlow, listStep);
+            
+            var orderStep = HttpContext.Session.Get<List<string>>("positions");
+            if (page == "Index")
+            {
+                var listStep = HttpContext.Session.Get<List<SchemeStepFlowModel>>("SchemeStepFlowModel") ?? new List<SchemeStepFlowModel>();
+                var listSheme = _serviceFlow.UpdateSchemeStepFlowModel(controleurs, listStep);
+                _serviceFlow.UpdateSchemeInDatabase(schemeWorkFlow, listSheme, orderStep, page);
+            }
+            else
+            {
+                var listStep = HttpContext.Session.Get<List<StepFlowModel>>("StepWorkFlow") ?? new List<StepFlowModel>();
+                _serviceFlow.SaveSchemeInDatabase(schemeWorkFlow, listStep, orderStep, page);
+            }
             HttpContext.Session.Set<List<StepFlowModel>>("StepWorkFlow", null);
-            return Ok(listStep);
+            HttpContext.Session.Set<List<SchemeStepFlowModel>>("SchemeStepFlowModel", null);
+            return Ok();
         }
         #endregion
 
