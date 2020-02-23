@@ -1,0 +1,37 @@
+﻿@model IEnumerable<WorkFlowDynamic.DataEntityTypes.SchemeWorkFlowSet>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Création de workFlow</h1>
+
+<p>
+    <a asp-action="Create">Créer nouveau</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SchemeName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SchemeName)
+                </td>
+                <td>
+                    <a asp-controller="StepWorkFlows" asp-action="Create" asp-route-id="@item.Id">Ajouter étapes</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
+                    <a asp-controller="StepWorkFlows" asp-action="Index" asp-route-id="@item.Id">Détails</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

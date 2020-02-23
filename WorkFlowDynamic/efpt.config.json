@@ -14,7 +14,19 @@
    "Tables": [
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[roles]"
+         "Name": "[dbo].[Agence]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Client]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Guichet]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[Operation]"
       },
       {
          "HasPrimaryKey": true,
@@ -26,7 +38,7 @@
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[specialite]"
+         "Name": "[dbo].[Service]"
       },
       {
          "HasPrimaryKey": true,
@@ -34,19 +46,15 @@
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[structure_interne]"
-      },
-      {
-         "HasPrimaryKey": true,
-         "Name": "[dbo].[ticket]"
-      },
-      {
-         "HasPrimaryKey": true,
          "Name": "[dbo].[TransitionSet]"
       },
       {
          "HasPrimaryKey": true,
-         "Name": "[dbo].[utilisateur]"
+         "Name": "[dbo].[TypeOperation]"
+      },
+      {
+         "HasPrimaryKey": true,
+         "Name": "[dbo].[User]"
       }
    ],
    "UseDatabaseNames": true,

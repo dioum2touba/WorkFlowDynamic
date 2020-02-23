@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="Controllers\UsersController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\js\axios.min.js" />
   </ItemGroup>
 

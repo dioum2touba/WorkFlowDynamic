@@ -10,7 +10,7 @@ using WorkFlowDynamic.Models;
 
 namespace WorkFlowDynamic.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : WorkflowController
     {
         private readonly ILogger<HomeController> _logger;
         private readonly WorkflowdynamicContext _context;
@@ -39,6 +39,7 @@ namespace WorkFlowDynamic.Controllers
         {
             var workflow = _serviceFlow.LoadWorkFlow(controleurs, id);
             HttpContext.Session.Set<List<SchemeStepFlowModel>>("WorkFlow", workflow);
+            HttpContext.Session.Set<int>("WorkFlowNumberStep", workflow.Count);
             HttpContext.Session.Set<string>("StepIdentifier", "0");
             return LoadNextStep(HttpContext.Session.Get<List<SchemeStepFlowModel>>("WorkFlow"), Convert.ToInt32(HttpContext.Session.Get<string>("StepIdentifier")));
         }
@@ -49,21 +50,21 @@ namespace WorkFlowDynamic.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public RedirectToActionResult LoadNextStep(List<SchemeStepFlowModel> workflowName, int stepIdentifier)
-        {
-            var defaultAction = workflowName.FirstOrDefault(w => w.Ordre == stepIdentifier.ToString());
-            //If the page is in a workflow
-            if (workflowName!= null && workflowName.Count>0)
-            {
-                 SchemeStepFlowModel step = _serviceFlow.GetNextStep(workflowName, stepIdentifier);
-               // return LoadNextStep(workflowName, Convert.ToInt32(stepIdentifier));
-                return RedirectToAction(step.Service, step.Gestionnaire);
-            }
-            else//if not
-            {
-                return RedirectToAction(defaultAction.Service, defaultAction.Gestionnaire);
-            }
-        }
+        //public RedirectToActionResult LoadNextStep(List<SchemeStepFlowModel> workflowName, int stepIdentifier)
+        //{
+        //    var defaultAction = workflowName.FirstOrDefault(w => w.Ordre == stepIdentifier.ToString());
+        //    //If the page is in a workflow
+        //    if (workflowName!= null && workflowName.Count>0)
+        //    {
+        //         SchemeStepFlowModel step = _serviceFlow.GetNextStep(workflowName, stepIdentifier);
+        //       // return LoadNextStep(workflowName, Convert.ToInt32(stepIdentifier));
+        //        return RedirectToAction(step.Service, step.Gestionnaire);
+        //    }
+        //    else//if not
+        //    {
+        //        return RedirectToAction(defaultAction.Service, defaultAction.Gestionnaire);
+        //    }
+        //}
 
         
     }
