@@ -184,11 +184,6 @@
                                     activityDropDown.append($("<option>", { value: obj.action, text: obj.description }));
                                 }
                             })
-                            var ordre = $("#ordre").val()
-                            if (ordre == "")
-                                $("#ordre").val(1)
-                            else
-                                $("#ordre").val(parseInt(ordre)+1)
                         },
                         error: function (xhr, status) {
 
@@ -229,30 +224,17 @@
                         table.empty()
                         $.each(result, function (index, value) {
                             table.append('<tr style="position: -webkit-sticky; position: sticky; top: 0px;" id=' + value.ordre
-                                + '><td class="geeks">' + value.activity + '</td><td>' + value.gestionnaire + '</td><td>' + value.service
+                                + '><td class="geeks">' + value.activity + '</td><td>' + value.detailsControleurs + '</td><td>' + value.description
                                 + '</td>' + '<td>' + value.ordre + '</td><td>' + value.occurence + '</td><td>' +
                                 '<button class="btn-primary btn-sm" onclick=ModifierLigne('+value.ordre+') id='+value.ordre+'>Modifier</button>  '+
                                 '<button class="btn-danger btn-sm" onclick=SupprimerLigne('+value.ordre+') id='+value.ordre+'>Supprimer</button></td></tr>');
                         });
-
-                        //$("#ListEtape").empty()
-                        //$.each(result, function (index, value) {
-                        //    $("#ListEtape").append('<div class="col-sm-3" style="">' +
-                        //        '<div class= "card" style = "width: 15rem; margin-right: 5px; padding-right: 5px; border: 2px solid #007bff;">' +
-                        //        '<ul class="list-group list-group-flush">' +
-                        //        '<li class="list-group-item">' + value.cible + '</li>' +
-                        //        '<li class="list-group-item">' + value.service + '</li>' +
-                        //        '<li class="list-group-item">' + value.ordre + '</li></ul>' +
-                        //        '</div></div>')
-                        //});
-
-                        // $("#SaveStep").prop('disabled', true);
                     }
                 })
             });
 
             // Valider le schéma
-            $("#SaveScheme").on('click', function () {
+             $("#SaveScheme").on('click', function () {
                 $.ajax({
                     type: "GET",
                     url: '@Url.Action("SaveSchemeInDatabase", "StepWorkFlows")',
@@ -261,7 +243,8 @@
                     success: function (result) {
                         console.log("Resultat save")
                         console.log(result)
-                            location.href = '@Url.Action("Index", "StepWorkFlows", new { id = "" })'
+                        var idScheme = $("#RedirectToId").val()
+                        location.href = '@Url.Action("Index", "StepWorkFlows", new { id = "idScheme" } )'.replace("idScheme", idScheme)
                     },
                     error: function (response) {
                         console.log("Resultat Error")
@@ -288,7 +271,8 @@
                     console.log(result)
                     table.empty()
                     $.each(result, function (index, value) {
-                        table.append('<tr id=' + value.ordre + '><td class="geeks">' + value.activity + '</td><td>' + value.gestionnaire + '</td><td>' + value.service + '</td>' +
+                        table.append('<tr id=' + value.ordre + '><td class="geeks">' + value.activity + '</td><td>' +
+                            value.detailsControleurs + '</td><td>' + value.description  + '</td>' +
                             '<td>' + value.ordre + '</td><td>' + value.occurence + '</td><td>'+
                             '<button class="btn-primary btn-sm" onclick=ModifierLigne('+value.ordre+') id='+value.ordre+'>Modifier</button>  '+
                             '<button class="btn-danger btn-sm" onclick=SupprimerLigne('+value.ordre+') id='+value.ordre+'>Supprimer</button></td></tr>');
@@ -329,7 +313,8 @@
                             console.log(result)
                             table.empty()
                             $.each(result, function (index, value) {
-                                table.append('<tr id=' + value.ordre + '><td class="geeks">' + value.activity + '</td><td>' + value.gestionnaire + '</td><td>' + value.service + '</td>' +
+                                table.append('<tr id=' + value.ordre + '><td class="geeks">' + value.activity + '</td><td>' +
+                                    value.detailsControleurs + '</td><td>' + value.description  + '</td>' +
                                     '<td>' + value.ordre + '</td><td>' + value.occurence + '</td><td>'+
                                     '<button class="btn-primary btn-sm" onclick=ModifierLigne('+value.ordre+') id='+value.ordre+'>Modifier</button>  '+
                                     '<button class="btn-danger btn-sm" onclick=SupprimerLigne('+value.ordre+') id='+value.ordre+'>Supprimer</button></td></tr>');

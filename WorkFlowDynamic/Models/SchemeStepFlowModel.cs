@@ -19,7 +19,8 @@ namespace WorkFlowDynamic.Models
         public string Gestionnaire { get; set; }
         [Display(Name = "Service")]
         public string Service { get; set; }
-        public string step { get; set; }
         public string id { get; set; }
+        public string Description { get; set; }
+        public string DetailsControleurs { get; set; }
     }
 }

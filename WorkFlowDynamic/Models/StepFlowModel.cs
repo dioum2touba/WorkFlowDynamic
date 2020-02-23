@@ -14,5 +14,9 @@ namespace WorkFlowDynamic.Models
         public string service { get; set; }
 
         public string activity { get; set; }
+
+        public string Description { get; set; }
+
+        public string DetailsControleurs { get; set; }
     }
 }
