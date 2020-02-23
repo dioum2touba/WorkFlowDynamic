@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using WorkFlowDynamic.DataEntityTypes;
 using WorkFlowDynamic.Models;
 using WorkFlowDynamic.Services;
@@ -184,6 +183,37 @@ namespace WorkFlowDynamic
                 stepFlowsExisted.Add(elt.Key, elt.Value);
 
             return stepFlowsExisted;
+        }
+        #endregion
+
+        #region Charger un workflow
+        public List<SchemeStepFlowModel> LoadWorkFlow(List<ControleurModels> controleurs, long? Id)
+        {
+            var list = _context.Scheme_StepSet.Where(s => s.SchemeWorkFlowId == Id).OrderBy(s => s.Numberstep).ToList();
+            List<SchemeStepFlowModel> flowModels = new List<SchemeStepFlowModel>();
+            foreach(var elt in list)
+            {
+                var stepFow = _context.StepWorkFlowSet.FirstOrDefault(s => s.Id == elt.StepWorkFlowId);
+                flowModels.Add(new SchemeStepFlowModel()
+                {
+                    Activity = elt.Activity,
+                    Description = controleurs.FirstOrDefault(c => c.Action == stepFow.Action && c.Controller == stepFow.Controller).Description,
+                    DetailsControleurs = controleurs.FirstOrDefault(c => c.Action == stepFow.Action && c.Controller == stepFow.Controller).DetailsControleurs,
+                    Gestionnaire = stepFow.Controller,
+                    Service = stepFow.Action,
+                    Occurence = elt.Occurences,
+                    Ordre = elt.Numberstep + "",
+                    id = elt.Id + ""
+                });
+            }
+            return flowModels;
+        }
+        // public GameState GetGame(int id) => _games.FirstOrDefault(g => g.Id == id);
+
+        public SchemeStepFlowModel GetNextStep(List<SchemeStepFlowModel> workflowName, int stepIdentifier)
+        {
+            var id = (stepIdentifier + 1).ToString();
+            return workflowName.FirstOrDefault(w => w.Ordre == id);
         }
         #endregion
 

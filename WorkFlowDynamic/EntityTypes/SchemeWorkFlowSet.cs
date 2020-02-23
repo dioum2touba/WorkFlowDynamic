@@ -18,6 +18,7 @@ namespace WorkFlowDynamic.DataEntityTypes
         [Required]
         [StringLength(50)]
         public string SchemeName { get; set; }
+        public bool? state { get; set; }
 
         [InverseProperty("SchemeWorkFlow")]
         public virtual ICollection<Scheme_StepSet> Scheme_StepSet { get; set; }
