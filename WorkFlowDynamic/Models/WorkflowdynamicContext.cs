@@ -18,15 +18,17 @@ namespace WorkFlowDynamic.Models
         {
         }
 
+        public virtual DbSet<Agence> Agence { get; set; }
+        public virtual DbSet<Client> Client { get; set; }
+        public virtual DbSet<Guichet> Guichet { get; set; }
+        public virtual DbSet<Operation> Operation { get; set; }
         public virtual DbSet<SchemeWorkFlowSet> SchemeWorkFlowSet { get; set; }
         public virtual DbSet<Scheme_StepSet> Scheme_StepSet { get; set; }
+        public virtual DbSet<Service> Service { get; set; }
         public virtual DbSet<StepWorkFlowSet> StepWorkFlowSet { get; set; }
         public virtual DbSet<TransitionSet> TransitionSet { get; set; }
-        public virtual DbSet<roles> roles { get; set; }
-        public virtual DbSet<specialite> specialite { get; set; }
-        public virtual DbSet<structure_interne> structure_interne { get; set; }
-        public virtual DbSet<ticket> ticket { get; set; }
-        public virtual DbSet<utilisateur> utilisateur { get; set; }
+        public virtual DbSet<TypeOperation> TypeOperation { get; set; }
+        public virtual DbSet<User> User { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -61,77 +63,6 @@ namespace WorkFlowDynamic.Models
                     .HasForeignKey(d => d.StepWorkFlowId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_TransitionSet_StepWorkFlowSet");
-            });
-
-            modelBuilder.Entity<roles>(entity =>
-            {
-                entity.HasKey(e => e.id_role)
-                    .HasName("PK__roles__3D48441DB580D230");
-
-                entity.HasIndex(e => e.role)
-                    .HasName("UK_g50w4r0ru3g9uf6i6fr4kpro8")
-                    .IsUnique();
-
-                entity.Property(e => e.role).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<specialite>(entity =>
-            {
-                entity.Property(e => e.nom_specialite).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<structure_interne>(entity =>
-            {
-                entity.Property(e => e.email).IsUnicode(false);
-
-                entity.Property(e => e.nom_structure).IsUnicode(false);
-
-                entity.Property(e => e.telephone).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<ticket>(entity =>
-            {
-                entity.Property(e => e.description).IsUnicode(false);
-
-                entity.Property(e => e.numticket).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<utilisateur>(entity =>
-            {
-                entity.HasKey(e => e.id_utilisateur)
-                    .HasName("PK__utilisat__1A4FA5B876F4998A");
-
-                entity.Property(e => e.adresse).IsUnicode(false);
-
-                entity.Property(e => e.email).IsUnicode(false);
-
-                entity.Property(e => e.fonction).IsUnicode(false);
-
-                entity.Property(e => e.login).IsUnicode(false);
-
-                entity.Property(e => e.nom).IsUnicode(false);
-
-                entity.Property(e => e.passwordd).IsUnicode(false);
-
-                entity.Property(e => e.prenom).IsUnicode(false);
-
-                entity.Property(e => e.profil).IsUnicode(false);
-
-                entity.Property(e => e.sexe).IsUnicode(false);
-
-                entity.Property(e => e.specialite).IsUnicode(false);
-
-                entity.Property(e => e.telephone).IsUnicode(false);
-
-                entity.HasOne(d => d.id_specialiteNavigation)
-                    .WithMany(p => p.utilisateur)
-                    .HasForeignKey(d => d.id_specialite)
-                    .HasConstraintName("FKus8x3f9o4rdhqeeo6puifpvg");
-
-                entity.HasOne(d => d.structure_interneNavigation)
-                    .WithMany(p => p.utilisateur)
-                    .HasForeignKey(d => d.structure_interne)
-                    .HasConstraintName("FK72fjx5yr05g2y1o53asdb6va0");
             });
 
             OnModelCreatingPartial(modelBuilder);

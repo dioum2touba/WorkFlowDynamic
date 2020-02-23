@@ -215,6 +215,17 @@ namespace WorkFlowDynamic
             var id = (stepIdentifier + 1).ToString();
             return workflowName.FirstOrDefault(w => w.Ordre == id);
         }
+
+        public SchemeStepFlowModel GetStep(List<SchemeStepFlowModel> workflowName, int stepIdentifier)
+        {
+            return workflowName.FirstOrDefault(w => w.Ordre == stepIdentifier.ToString());
+        }
+
+        public SchemeStepFlowModel GetPreviousStep(List<SchemeStepFlowModel> workflowName, int stepIdentifier)
+        {
+            var step = Convert.ToInt32(GetStep(workflowName, stepIdentifier).Ordre) - 1;
+            return workflowName.FirstOrDefault(w => w.Ordre == step.ToString());
+        }
         #endregion
 
         public List<SchemeStepFlowModel> GetSchemeStepFlowModel(SchemeWorkFlowSet scheme, List<ControleurModels> controleurs)

@@ -2,33 +2,45 @@
   "Controllers": [
     {
       "Action": "Create",
-      "Controller": "utilisateurs",
-      "Description": "Creer un utilisateur",
-      "DetailsControleurs": "Gestion des utilisateurs"
+      "Controller": "Agences",
+      "Description": "Création d'une agence",
+      "DetailsControleurs": "Gestion des agences"
     },
     {
       "Action": "Create",
-      "Controller": "Specialites",
-      "DetailsControleurs": "Gestion des specialites",
-      "Description": "Creer une specialites"
+      "Controller": "Clients",
+      "DetailsControleurs": "Gestion des clients",
+      "Description": "Création d'un client"
     },
     {
       "Action": "Create",
-      "Controller": "structureInterne",
-      "DetailsControleurs": "Gestion des structures internes",
-      "Description": "Creer une structure interne"
+      "Controller": "Guichets",
+      "DetailsControleurs": "Gestion des guichets",
+      "Description": "Création d'un Guichets"
     },
     {
       "Action": "Create",
-      "Controller": "Roles",
-      "DetailsControleurs": "Gestion des roles",
-      "Description": "Creer un role"
+      "Controller": "Operations",
+      "DetailsControleurs": "Gestion des opérations",
+      "Description": "Création d'un opération"
     },
     {
       "Action": "Create",
-      "Controller": "Tickets",
-      "DetailsControleurs": "Gestion des tickets",
-      "Description": "Creer un ticket"
+      "Controller": "Services",
+      "DetailsControleurs": "Gestion des Services",
+      "Description": "Création d'un Service"
+    },
+    {
+      "Action": "Create",
+      "Controller": "Users",
+      "DetailsControleurs": "Gestion des utilisateurs",
+      "Description": "Création d'un utilisateur"
+    },
+    {
+      "Action": "Create",
+      "Controller": "TypeOperations",
+      "DetailsControleurs": "Gestion des TypeOperations",
+      "Description": "Création d'un type d'opération"
     }
   ]
 } 

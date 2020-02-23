@@ -1,0 +1,72 @@
+﻿@model WorkFlowDynamic.DataEntityTypes.Client
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>@ViewBag.Activity</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nom" class="control-label"></label>
+                <input asp-for="Nom" class="form-control" />
+                <span asp-validation-for="Nom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Prenom" class="control-label"></label>
+                <input asp-for="Prenom" class="form-control" />
+                <span asp-validation-for="Prenom" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateNaissance" class="control-label"></label>
+                <input asp-for="DateNaissance" class="form-control" />
+                <span asp-validation-for="DateNaissance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LieuNaissance" class="control-label"></label>
+                <input asp-for="LieuNaissance" class="form-control" />
+                <span asp-validation-for="LieuNaissance" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumeroIdentification" class="control-label"></label>
+                <input asp-for="NumeroIdentification" class="form-control" />
+                <span asp-validation-for="NumeroIdentification" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Telephone" class="control-label"></label>
+                <input asp-for="Telephone" class="form-control" />
+                <span asp-validation-for="Telephone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Adresse" class="control-label"></label>
+                <input asp-for="Adresse" class="form-control" />
+                <span asp-validation-for="Adresse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Profession" class="control-label"></label>
+                <input asp-for="Profession" class="form-control" />
+                <span asp-validation-for="Profession" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateInscription" class="control-label"></label>
+                <input asp-for="DateInscription" class="form-control" />
+                <span asp-validation-for="DateInscription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-0  col-sm-offset-2 col-md-offset-2 col-xs-12  col-sm-10 col-md-10">
+                    <a class="btn btn-primary btn-sm" role="button" href="~/Clients/PreviousPage">Précédent</a>
+                    <input type="submit" id="idvalid" value="Suivant" class="btn btn-primary btn-sm" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<br /><br /><br /><br /><br /><br /><br /><br />
