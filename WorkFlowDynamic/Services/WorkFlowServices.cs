@@ -34,8 +34,12 @@ namespace WorkFlowDynamic
         
         public void SaveSchemeInDatabase(SchemeWorkFlowSet schemeWorkFlow, List<StepFlowModel> listStep, List<string> orderStep, string page)
         {
+            List<StepFlowModel> orderedList = null;
             // Ordonner d'abord la liste des activités le choix du User
-            var orderedList = OrderedActivities(listStep, orderStep);
+            if (orderStep != null && orderStep.Count > 0)
+                orderedList = OrderedActivities(listStep, orderStep);
+            else
+                orderedList = listStep;
 
             // Mise à jour de la liste pour ne pas enregistrer deux la liste
             var list = CheckIfStepFlowExists(orderedList);
@@ -63,8 +67,14 @@ namespace WorkFlowDynamic
         public void UpdateSchemeInDatabase(SchemeWorkFlowSet schemeWorkFlow, List<SchemeStepFlowModel> listStep, List<string> orderStep, string page)
         {
             // Ordonner d'abord la liste des activités le choix du User
-            var orderedList = UpdateOrderedActivities(listStep, orderStep);
+            List<SchemeStepFlowModel> orderedList = null;
+            // Ordonner d'abord la liste des activités le choix du User
+            if (orderStep != null && orderStep.Count > 0)
+                orderedList = UpdateOrderedActivities(listStep, orderStep);
+            else
+                orderedList = listStep;
 
+           // UpdateSchemeStepFlowModel
             // Mise à jour de la liste pour ne pas enregistrer deux la liste
             var list = UpdateCheckIfStepFlowExists(orderedList);
 
@@ -78,7 +88,7 @@ namespace WorkFlowDynamic
                 _context.Scheme_StepSet.Add(new Scheme_StepSet()
                 {
                     StepWorkFlow = new StepWorkFlowSet() 
-                    { Action = elt.Value.Service, Controller = elt.Value.Gestionnaire, Id = Convert.ToInt32(elt.Value.id)},
+                    { Action = elt.Value.Service, Controller = elt.Value.Gestionnaire},
                     //Numberstep = Convert.ToInt32(elt.ordre),
                     SchemeWorkFlowId = schemeWorkFlow.Id,
                     Activity = elt.Key,
@@ -190,9 +200,10 @@ namespace WorkFlowDynamic
                     Activity = stepScheme.FirstOrDefault(s => s.StepWorkFlowId == elt.Id).Activity,
                     Occurence = stepScheme.FirstOrDefault(s => s.StepWorkFlowId == elt.Id).Occurences,
                     Ordre = stepScheme.FirstOrDefault(s => s.StepWorkFlowId == elt.Id).Numberstep + "",
-                    Gestionnaire = controleurs.FirstOrDefault(c => c.Controller == elt.Controller && c.Action == elt.Action).DetailsControleurs,
-                    Service = controleurs.FirstOrDefault(c => c.Controller == elt.Controller && c.Action == elt.Action).Description,
-                    step = stepScheme.FirstOrDefault(s => s.StepWorkFlowId == elt.Id).Numberstep + ""
+                    DetailsControleurs = controleurs.FirstOrDefault(c => c.Controller == elt.Controller && c.Action == elt.Action).DetailsControleurs,
+                    Description = controleurs.FirstOrDefault(c => c.Controller == elt.Controller && c.Action == elt.Action).Description,
+                    Gestionnaire = elt.Controller,
+                    Service = elt.Action
                 });
             }
             return schemeStepFlowModels;
@@ -211,7 +222,8 @@ namespace WorkFlowDynamic
                     Ordre = elt.Ordre,
                     Gestionnaire = controleurs.FirstOrDefault(c => c.DetailsControleurs == elt.Gestionnaire && c.Description == elt.Service).Controller,
                     Service = controleurs.FirstOrDefault(c => c.DetailsControleurs == elt.Gestionnaire && c.Description == elt.Service).Action,
-                    step = elt.step 
+                    Description = controleurs.FirstOrDefault(c => c.DetailsControleurs == elt.Gestionnaire && c.Description == elt.Service).Description,
+                    DetailsControleurs = controleurs.FirstOrDefault(c => c.DetailsControleurs == elt.Gestionnaire && c.Description == elt.Service).DetailsControleurs
                 });
             }
             return schemeStepFlowModels;

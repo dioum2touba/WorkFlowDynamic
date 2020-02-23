@@ -123,8 +123,7 @@
 <br />
 <br />
 
-@*<script src="~/js/axios.min.js"></script>*@
-@*<script src="~/js/jquery-2.1.4.min.js"></script>*@
+<input id="RedirectToId" name="RedirectToId" type="hidden" value=@ViewBag.SchemeId />
 <script src="~/lib/sweetalert2/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="~/css/sweetalert2/sweetalert2.min.css">
 @section Scripts {
@@ -187,11 +186,6 @@
                                 activityDropDown.append($("<option>", { value: obj.action, text: obj.description }));
                             }
                         })
-                        var ordre = $("#ordre").val()
-                        if (ordre == "")
-                            $("#ordre").val(1)
-                        else
-                            $("#ordre").val(parseInt(ordre)+1)
                     },
                     error: function (xhr, status) {
 
@@ -230,7 +224,8 @@
                     console.log(result)
                     table.empty()
                     $.each(result, function (index, value) {
-                        table.append('<tr id=' + value.id + '><td class="geeks">' + value.activity + '</td><td>' + value.cible + '</td><td>' + value.service + '</td>' +
+                        table.append('<tr id=' + value.id + '><td class="geeks">' + value.activity + '</td><td>' + value.detailsControleurs +
+                            '</td><td>' + value.description + '</td>' +
                             '<td><button class="btn-danger btn-sm" onclick=SupprimerLigne('+value.id+') id='+value.id+'>Supprimer</button></td></tr>');
                     });
 
@@ -260,7 +255,9 @@
                 success: function (result) {
                     console.log("Resultat save")
                     console.log(result)
-                        location.href = '@Url.Action("Index", "StepWorkFlows")'
+                    var idScheme = $("#RedirectToId").val()
+                    location.href = '@Url.Action("Index", "StepWorkFlows", new { id = "idScheme" } )'.replace("idScheme", idScheme)
+
 
                 },
                 error: function (response) {
@@ -288,7 +285,8 @@
                 console.log(result)
                 table.empty()
                 $.each(result, function (index, value) {
-                    table.append('<tr id=' + value.id + '><td class="geeks">' + value.activity + '</td><td>' + value.cible + '</td><td>' + value.service + '</td>' +
+                    table.append('<tr id=' + value.id + '><td class="geeks">' + value.activity + '</td><td>' +
+                        value.detailsControleurs + '</td><td>' + value.description + '</td>' +
                         '<td><button class="btn-danger btn-sm" onclick=SupprimerLigne('+value.id+') id='+value.id+'>Supprimer</button></td></tr>');
                 });
 
@@ -344,7 +342,8 @@
                         console.log(result)
                         table.empty()
                         $.each(result, function (index, value) {
-                            table.append('<tr id=' + value.id + '><td class="geeks">' + value.activity + '</td><td>' + value.cible + '</td><td>' + value.service + '</td>' +
+                            table.append('<tr id=' + value.id + '><td class="geeks">' + value.activity + '</td><td>' +
+                                value.detailsControleurs + '</td><td>' + value.description + '</td>' +
                                 '<td><button class="btn-danger btn-sm" onclick=SupprimerLigne('+value.id+') id='+value.id+'>Supprimer</button></td></tr>');
                         })
                         Swal.fire(
