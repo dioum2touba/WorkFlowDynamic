@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\LENOVO\\Documents\\WorkFlowEngine\\WorkFlowDynamic\\WorkFlowDynamic\\WorkFlowDynamic.csproj": {}
+    "C:\\Users\\Obertys\\source\\repos\\WorkFlowDynamic\\WorkFlowDynamic\\WorkFlowDynamic\\WorkFlowDynamic.csproj": {}
   },
   "projects": {
-    "C:\\Users\\LENOVO\\Documents\\WorkFlowEngine\\WorkFlowDynamic\\WorkFlowDynamic\\WorkFlowDynamic.csproj": {
+    "C:\\Users\\Obertys\\source\\repos\\WorkFlowDynamic\\WorkFlowDynamic\\WorkFlowDynamic\\WorkFlowDynamic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\LENOVO\\Documents\\WorkFlowEngine\\WorkFlowDynamic\\WorkFlowDynamic\\WorkFlowDynamic.csproj",
+        "projectUniqueName": "C:\\Users\\Obertys\\source\\repos\\WorkFlowDynamic\\WorkFlowDynamic\\WorkFlowDynamic\\WorkFlowDynamic.csproj",
         "projectName": "WorkFlowDynamic",
-        "projectPath": "C:\\Users\\LENOVO\\Documents\\WorkFlowEngine\\WorkFlowDynamic\\WorkFlowDynamic\\WorkFlowDynamic.csproj",
-        "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\LENOVO\\Documents\\WorkFlowEngine\\WorkFlowDynamic\\WorkFlowDynamic\\obj\\",
+        "projectPath": "C:\\Users\\Obertys\\source\\repos\\WorkFlowDynamic\\WorkFlowDynamic\\WorkFlowDynamic\\WorkFlowDynamic.csproj",
+        "packagesPath": "C:\\Users\\Obertys\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Obertys\\source\\repos\\WorkFlowDynamic\\WorkFlowDynamic\\WorkFlowDynamic\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\LENOVO\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Obertys\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -74,6 +74,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.0.1, 3.0.1]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.0.2, 3.0.2]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.0.0, 3.0.0]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[3.0.0, 3.0.0]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -82,7 +100,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
