@@ -3,44 +3,44 @@
     {
       "Action": "Create",
       "Controller": "Agences",
-      "Description": "Création d'une agence",
+      "Description": "Creation d'une agence",
       "DetailsControleurs": "Gestion des agences"
     },
     {
       "Action": "Create",
       "Controller": "Clients",
       "DetailsControleurs": "Gestion des clients",
-      "Description": "Création d'un client"
+      "Description": "Creation d'un client"
     },
     {
       "Action": "Create",
       "Controller": "Guichets",
       "DetailsControleurs": "Gestion des guichets",
-      "Description": "Création d'un Guichets"
+      "Description": "Creation d'un Guichets"
     },
     {
       "Action": "Create",
       "Controller": "Operations",
-      "DetailsControleurs": "Gestion des opérations",
-      "Description": "Création d'un opération"
+      "DetailsControleurs": "Gestion des operations",
+      "Description": "Creation d'un operation"
     },
     {
       "Action": "Create",
       "Controller": "Services",
       "DetailsControleurs": "Gestion des Services",
-      "Description": "Création d'un Service"
+      "Description": "Creation d'un Service"
     },
     {
       "Action": "Create",
       "Controller": "Users",
       "DetailsControleurs": "Gestion des utilisateurs",
-      "Description": "Création d'un utilisateur"
+      "Description": "Creation d'un utilisateur"
     },
     {
       "Action": "Create",
       "Controller": "TypeOperations",
       "DetailsControleurs": "Gestion des TypeOperations",
-      "Description": "Création d'un type d'opération"
+      "Description": "Creation d'un type d'operation"
     }
   ]
 } 

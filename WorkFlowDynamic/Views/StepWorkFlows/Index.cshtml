@@ -26,15 +26,22 @@
     td {
         width: 150px;
         text-align: center;
-        border-top: 1px solid black;
-        border: 1px solid black;
+        border-top: 1px solid #6c757d;
+        border: 1px solid #6c757d;
         padding: 5px;
-        background-color: black;
+        background-color: #6c757d;
         Color: white;
+        font-weight: bold;
     }
 
     .geeks {
         border-right: hidden;
+    }
+
+    #enTete {
+        background-color: white; 
+        color: black;
+        font-weight: bold;
     }
 </style>
 
@@ -70,8 +77,8 @@
 <div class="card-body" style="z-index: 0;">
     <h3 class="text-center">Liste des activités du workflow</h3>
     <div class="table-responsive">
-        <table class="thead-dark table table-hover">
-            <tr>
+        <table class="thead-dark table table-hover" style="background-color: #6c757d; color: black;">
+            <tr id="enTete">
                 <td>
                     Nom de l'activité
                 </td>
@@ -87,6 +94,7 @@
                 <td>
                     Nombre Occurence
                 </td>
+                <td></td>
             </tr>
         </table>
         <table id="myTable" class="row_position thead-dark table table-hover">
