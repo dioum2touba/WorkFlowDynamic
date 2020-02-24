@@ -7,7 +7,7 @@
 <h1>Création de workFlow</h1>
 
 <p>
-    <a asp-action="Create">Créer nouveau</a>
+    <span class="mb-2 mr-2 btn btn-success"><a style="color: white;" asp-action="Create">Créer nouveau</a></span>
 </p>
 <table class="table">
     <thead>
@@ -23,15 +23,15 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SchemeName)
+                    <div class="mb-2 mr-2 badge badge-alternate">@Html.DisplayFor(modelItem => item.SchemeName)</div>
                 </td>
                 <td>
-                    <a asp-controller="StepWorkFlows" asp-action="Create" asp-route-id="@item.Id">Ajouter étapes</a> |
-                    <a asp-action="Edit" asp-route-id="@item.Id">Modifier</a> |
-                    <a asp-controller="StepWorkFlows" asp-action="Index" asp-route-id="@item.Id">Détails</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Supprimer</a>
+                    <span class="mb-2 mr-2 btn btn-primary"><a style="color: white;" asp-controller="StepWorkFlows" asp-action="Create" asp-route-id="@item.Id"> Ajouter étapes </a></span> 
+                    <span class="mb-2 mr-2 btn btn-secondary"><a style="color: white;" asp-action="Edit" asp-route-id="@item.Id"> Modifier </a></span> 
+                    <span class="mb-2 mr-2 btn btn-dark"><a style="color: white;" asp-controller="StepWorkFlows" asp-action="Index" asp-route-id="@item.Id"> Détails </a></span> 
+                    <span class="mb-2 mr-2 btn btn-danger"><a style="color: white;" asp-action="Delete" asp-route-id="@item.Id"> Supprimer </a></span>
                 </td>
             </tr>
         }
-    </tbody>
+</tbody>
 </table>
